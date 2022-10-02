@@ -1,4 +1,4 @@
-module.exports = function merge_sort (arr) {
+export function merge_sort (arr) {
     if (arr.length == 1) {
         return arr;
     }

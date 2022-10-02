@@ -1,11 +1,11 @@
-const MergeSort = require("./merge_sort");
-const Node = require("./node");
+import { merge_sort } from "./merge_sort.mjs";
+import { Node } from './node.mjs'
 
-module.exports = function (arr) {
+export function tree (arr) {
     let root = buildTree(prepare_array(arr));
 
     function prepare_array(arr) {
-        return (MergeSort([...new Set(arr)]))
+        return (merge_sort([...new Set(arr)]))
     }
 
     function buildTree(arr) {
