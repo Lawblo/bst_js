@@ -45,7 +45,7 @@ export function tree (arr) {
 
         if (node.data > value && node.left) {
             return find(value, node.left)
-        } 
+} 
         else if ( node.data < value && node.right) {
             return find(value, node.right)
         }
@@ -163,6 +163,47 @@ export function tree (arr) {
         stored_output.push(func(node.data))
         return stored_output
     }
+
+    function height(node=root, cur_height = 0, max_height = 0) {
+    // get distance to leaf
+        max_height = cur_height > max_height ? cur_height : max_height
+
+        if (!node.left && !node.right) {
+            return max_height
+        }
+
+        let l_height = 0
+        let r_height = 0
+
+        if (node.left) {
+            l_height = height(node.left, cur_height + 1, max_height)
+        }
+
+        if (node.right) {
+            r_height = height(node.right, cur_height + 1, max_height)
+        }
+
+        return l_height > r_height ? l_height : r_height
+    }
+
+    function depth(find_node=root, node=root, node_depth=0) {
+        if (node == find_node) {
+            return node_depth
+        }
+
+        if (node.data > find_node.data) {
+            return depth(find_node, node.left, node_depth + 1)
+        }
+        if (node.data < find_node.data) {
+            return depth(find_node, node.right, node_depth + 1)
+        }
+        return null
+    }
+
+    function isBalanced(node = root) {
+
+    }
+
     function prettyPrint(node = root, prefix = '', isLeft = true) {
         if (node.right !== null) {
             prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
@@ -172,6 +213,6 @@ export function tree (arr) {
             prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
         }
     }
-    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, prettyPrint };
+    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, height, depth, prettyPrint };
 }
 
