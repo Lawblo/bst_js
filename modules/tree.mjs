@@ -20,8 +20,6 @@ export function tree (arr) {
         return Node(arr[mid], buildTree(left), buildTree(right));
     }
 
-
-
     function insert(value, node = root) {
         if (value < node.data) {
             node.left
@@ -56,57 +54,124 @@ export function tree (arr) {
         }
     }
 
-    function delete_val(value) {
-        let node = find(value)
-        console.log(node)
+    function find_smallest(node = root) {
+        if (!node.left) {
+            return node.data
+        }
+        else {
+            return find_smallest(node.left)
+        }
+    }
+
+    function delete_node(value, node=root) {
         if (!node) {
-            console.log('value not found')
-            return 
+            return null
         }
-
-        if (!node.left && node.right) {
-            node.data = node.right.data
-            node.right = node.right.right
-            node.left = node.right.left
-            return 
-        }  
-        if (!node.right && node.left) {
-            node.data = node.left.data
-            node.right = node.left.right
-            node.left = node.left.left
-            return 
+        if (value < node.data) {
+            node.left = delete_node(value, node.left)
         }
-
-        if (!node.left && !node.right) {
-            node.data = null
-            node.left = null
-            node.right = null
-            return 
+        else if (value > node.data) {
+            node.right = delete_node(value, node.right)
         }
-
-        let store_right = node.right
-
-        place_node(store_right, node)
+        else if (value == node.data) {
+            if (node.left == null) {
+                return node.right
+            }
+            else if (node.right == null) {
+                return node.left
+            }
+            node.data = find_smallest(node.right)
+            node.root = delete_node(node.data, node.right)
+        }
+        return node
     }
 
-    function place_node(store_node, node) {
-        if (!node.right) {
-            node.right = store_node
-            return 
+    function levelOrderRec(func=node_data => node_data, node=root, stored_nodes = [], stored_output = []) {
+        stored_output.push(func(node.data))
+        if(node.left) {
+            stored_nodes.push(node.left)
         }
-
-        place_node(store_node, node.right)
+        if (node.right) {
+            stored_nodes.push(node.right) 
+        }
+        if (stored_nodes.length > 0) {
+            levelOrderRec(func, stored_nodes.shift(), stored_nodes, stored_output)
+        }
+        return stored_output
     }
 
-    function prettyPrint(node = root, prefix = "", isLeft = true) {
+    function levelOrderIt(func=node_data => node_data) {
+        let stored_output = []
+        let stored_nodes = []
+        let node = root
+        if (!node) {
+            console.log('Tree Empty')
+            return null
+        }
+
+        while (true) {
+            stored_output.push(func(node.data))
+            if (node.left) {
+                stored_nodes.push(node.left)
+            }
+
+            if (node.right) {
+                stored_nodes.push(node.right)
+            }
+
+            if(stored_nodes.length < 1) {
+                return stored_output
+            }
+            else {
+                node = stored_nodes.shift()
+            }
+        }
+    }
+
+    function inorder(func=node_data => node_data, node=root, stored_output=[]) {
+        if (node.left) {
+            inorder(func, node.left, stored_output)
+        }
+        stored_output.push(func(node.data))
+
+        if (node.right) {
+            inorder(func, node.right, stored_output)
+        }
+        return stored_output
+    }
+
+    function preorder(func=node_data => node_data, node=root, stored_output=[]) {
+        stored_output.push(func(node.data))
+        if (node.left) {
+            inorder(func, node.left, stored_output)
+        }
+
+        if (node.right) {
+            inorder(func, node.right, stored_output)
+        }
+        return stored_output
+    }
+
+    function postorder(func=node_data => node_data, node=root, stored_output=[]) {
+        if (node.left) {
+            inorder(func, node.left, stored_output)
+        }
+
+        if (node.right) {
+            inorder(func, node.right, stored_output)
+        }
+        stored_output.push(func(node.data))
+        return stored_output
+    }
+    function prettyPrint(node = root, prefix = '', isLeft = true) {
         if (node.right !== null) {
-            prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+            prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
         }
-        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+        console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
         if (node.left !== null) {
-            prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+            prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
         }
     }
-    return { root, insert, find, delete_val, prettyPrint };
+    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, prettyPrint };
 }
 
