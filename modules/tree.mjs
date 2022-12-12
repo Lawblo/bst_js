@@ -201,7 +201,25 @@ export function tree (arr) {
     }
 
     function isBalanced(node = root) {
+        if (!node.left && !node.right) {
+            return
+        }
 
+        let left_h = 0
+        if (node.left) {
+            left_h = height(node.left)
+        }
+        let right_h = 0
+        if (node.righ) {
+            right_h = height(node.right)
+        }
+
+        if (Math.abs(left_h - right_h) > 1) {
+            return false
+        }
+
+        if (!isBalanced(node.left) || !isBalanced(node.right)) return false
+        else return true
     }
 
     function prettyPrint(node = root, prefix = '', isLeft = true) {
@@ -213,6 +231,6 @@ export function tree (arr) {
             prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
         }
     }
-    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, height, depth, prettyPrint };
+    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, height, depth, isBalanced, prettyPrint };
 }
 

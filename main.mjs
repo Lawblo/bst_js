@@ -10,12 +10,11 @@ function drawTrees(repeats) {
         let full_tree = tree(arr);
 
         full_tree.insert(13)
+        full_tree.insert(16)
         full_tree.prettyPrint()
-        let find_node = full_tree.find(5)
-        let depth = full_tree.depth(find_node)
-        console.log(depth)
 
-
+        let a = full_tree.isBalanced()
+        console.log(a)
         
 
     }
