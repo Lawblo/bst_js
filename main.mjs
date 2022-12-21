@@ -1,7 +1,5 @@
 import { tree } from "./modules/tree.mjs";
 
-
-
 function drawTrees(repeats) {
     for (let i = 0; i < repeats; i++) {
 
@@ -20,8 +18,5 @@ function drawTrees(repeats) {
     }
 
 }
-
-
-
 
 drawTrees(1)

@@ -109,6 +109,7 @@ export function tree (arr) {
             return null
         }
 
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             stored_output.push(func(node.data))
             if (node.left) {
@@ -175,7 +176,7 @@ export function tree (arr) {
         let l_height = 0
         let r_height = 0
 
-        if (node.left) {
+        if (node.left){
             l_height = height(node.left, cur_height + 1, max_height)
         }
 
@@ -231,6 +232,10 @@ export function tree (arr) {
             prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
         }
     }
-    return { root, insert, find, find_smallest, delete_node, levelOrderRec, levelOrderIt, inorder, preorder, postorder, height, depth, isBalanced, prettyPrint };
+    return { 
+        root, insert, find, find_smallest, delete_node, levelOrderRec,
+        levelOrderIt, inorder, preorder, postorder, height, depth, isBalanced,
+        prettyPrint 
+    };
 }
 
